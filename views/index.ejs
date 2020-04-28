@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+    <form action="/calc" method="POST">
+        <input name="num1" type="number" step="0.01" placeholder="Numero 1"/>
+        <select name="op">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input name="num2" type="number" step="0.01" placeholder="Numero 2"/>
+        <button type="submit">Calcular</button>
+    </form>
+    <h2>Contas:</h2>
+    <% for(let conta of contas){ %>
+        <p><%- conta.num1 %> <%- conta.op %> <%- conta.num2 %> = <%- conta.total %></p>
+    <% } %>
+</body>
+</html>
