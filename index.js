@@ -1,23 +1,20 @@
 const path = require('path');
 const port = process.env.PORT || 3000;
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(session({
+    secret: 'devpleno',
+    cookie: {
+        maxAge: 10*60*1000
+    }
+}));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-app.get('/', (req, res) => {
-    let contas = [];
-    if('contas' in req.cookies){
-        contas = req.cookies.contas;
-    }
-    res.render('index',{ contas });
-});
 
 Math.toRound = function(number, precision){
     let factor = this.pow(10, precision);
@@ -25,6 +22,15 @@ Math.toRound = function(number, precision){
     let roundedTempNumber = this.round(tempNumber);
     return roundedTempNumber / factor;
 }
+
+app.get('/', (req, res) => {
+    console.log('session id', req.session.id);
+    let contas = [];
+    if('contas' in req.session){
+        contas = req.session.contas;
+    }
+    res.render('index',{ contas });
+});
 
 app.post('/calc', (req, res) => {
     let { num1, op, num2 } = req.body;
@@ -41,8 +47,8 @@ app.post('/calc', (req, res) => {
     const total = calcular[op](num1,num2);
     let contas = [];
 
-    if('contas' in req.cookies){
-        contas = req.cookies.contas;
+    if('contas' in req.session){
+        contas = req.session.contas;
     }
 
     contas.push({
@@ -52,7 +58,7 @@ app.post('/calc', (req, res) => {
         total: Math.toRound(total, 2)
     });
 
-    res.cookie('contas', contas);
+    req.session.contas = contas;
     res.redirect('/');
 });
 

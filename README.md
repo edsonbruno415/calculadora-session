@@ -1,10 +1,10 @@
-# Calculadora Cookie
+# Calculadora Session
 
 ##### How to install
 
 Paste this command into your terminal:
 ```
-git clone https://github.com/edsonbruno415/calculadora-cookie.git
+git clone https://github.com/edsonbruno415/calculadora-session.git
 ```
 
 install all dependencies with:
